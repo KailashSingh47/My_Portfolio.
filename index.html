@@ -428,5 +428,39 @@
             observer.observe(el);
         });
     </script>
+    <!-- Hidden audio element -->
+<audio id="greeting-audio" preload="auto">
+  <source src="audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV" type="audio/mpeg">
+</audio>
+
+<script>
+  // Play greeting when page loads
+  window.addEventListener('load', function() {
+    // Small delay to avoid autoplay blockers
+    setTimeout(() => {
+      const audio = document.getElementById('greeting-audio');
+      audio.play().catch(e => {
+        console.log("Audio autoplay blocked - user must interact first");
+        // Fallback to text-to-speech
+        if ('speechSynthesis' in window) {
+          const greeting = "Welcome to Kailash's portfolio";
+          const utterance = new SpeechSynthesisUtterance(greeting);
+          utterance.rate = 1.0; // Normal speed
+          utterance.pitch = 1.0; // Normal pitch
+          speechSynthesis.speak(utterance);
+        }
+      });
+    }, 500);
+
+    // Also play when user clicks anywhere (fallback for autoplay)
+    document.addEventListener('click', function() {
+      const audio = document.getElementById('greeting-audio');
+      if (audio.paused) {
+        audio.play();
+      }
+    });
+  });
+</script>
 </body>
+
 </html>
